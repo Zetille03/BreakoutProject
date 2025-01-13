@@ -11,7 +11,6 @@ public class PlayerMovement : MonoBehaviour
     
     Vector3 moveDirection = Vector3.zero;
 
-
     // Update is called once per frame
     void Update()
     {   
