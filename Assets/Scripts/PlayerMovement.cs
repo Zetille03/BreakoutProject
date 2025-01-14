@@ -7,7 +7,8 @@ using UnityEngine.Serialization;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float speed = 5f;
-    [SerializeField] private float xLimit = 5.4f;
+    [SerializeField] private float xMin = -6.4f;
+    [SerializeField] private float xMax = 4.5f;
     
     Vector3 moveDirection = Vector3.zero;
 
@@ -20,7 +21,7 @@ public class PlayerMovement : MonoBehaviour
 
         transform.position += moveDirection * (speed * Time.deltaTime);
 
-        float clampedX = Mathf.Clamp(transform.position.x,-xLimit, xLimit);
+        float clampedX = Mathf.Clamp(transform.position.x,xMin, xMax);
         transform.position = new Vector3(clampedX, transform.position.y, transform.position.z);
 
         
