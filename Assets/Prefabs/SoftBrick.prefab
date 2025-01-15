@@ -143,6 +143,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26403ba91de3ef4b8bad6f1a58927ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lives: 2
+  lives: 1
   breakedBrick: {fileID: -838595566, guid: ea75a7f4813ae8d42bcfb45dcdc1d370, type: 3}
   points: 150

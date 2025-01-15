@@ -51,27 +51,45 @@ public class ProjectileMovement : MonoBehaviour
         
         if (otherObject.CompareTag("Player"))
         {
-            Vector2 contactLocal = contact.point - (Vector2)otherObject.transform.position;
-            Vector2 newAngle = Vector2.Reflect(_velocityPrev, normal);
-            float angulo = Vector2.Angle(newAngle, normal);
-            if ((contactLocal.x < -0.5f || contactLocal.x > 0.5f) && angulo < 45f)
-            {
-                Vector2 newDirection;
-                if (_rb.velocity.x <= 0)
-                {
-                    newDirection = new Vector2(-Mathf.Sqrt(2) / 2, Mathf.Sqrt(2) / 2);
-                }
-                else
-                {
-                    newDirection = new Vector2(Mathf.Sqrt(2) / 2, Mathf.Sqrt(2) / 2);
-                }
-                _rb.velocity = newDirection * _rb.velocity.magnitude;
-            }
-            else
-            {
-                _rb.velocity = Vector3.Reflect(_velocityPrev, normal);
+            // Obtener la velocidad del jugador desde PlayerMovement
+            PlayerMovement playerMovement = playerGameObject.GetComponent<PlayerMovement>();
+            Vector2 playerVelocity = playerMovement != null ? new Vector2(playerMovement.Velocity.x, 0f) : Vector2.zero;
 
+            // Reflejar la velocidad previa de la pelota
+            Vector2 reflectedVelocity = Vector2.Reflect(_velocityPrev, normal);
+
+            // Verificar si el jugador está en movimiento en el eje X
+            if (Mathf.Abs(playerVelocity.x) > 0.01f) // Umbral para detectar movimiento significativo
+            {
+                // Cambiar drásticamente la dirección de la pelota en X según el movimiento del jugador
+                float xDirection = Mathf.Sign(playerVelocity.x); // Dirección del movimiento del jugador (-1 o 1)
+                reflectedVelocity.x = xDirection * Mathf.Abs(reflectedVelocity.x);
             }
+
+            // Asignar la nueva velocidad normalizada
+            _rb.velocity = reflectedVelocity.normalized * _velocityPrev.magnitude;
+            
+            // Vector2 contactLocal = contact.point - (Vector2)otherObject.transform.position;
+            // Vector2 newAngle = Vector2.Reflect(_velocityPrev, normal);
+            // float angulo = Vector2.Angle(newAngle, normal);
+            // if ((contactLocal.x < -0.5f || contactLocal.x > 0.5f) && angulo < 45f)
+            // {
+            //     Vector2 newDirection;
+            //     if (_rb.velocity.x <= 0)
+            //     {
+            //         newDirection = new Vector2(-Mathf.Sqrt(2) / 2, Mathf.Sqrt(2) / 2);
+            //     }
+            //     else
+            //     {
+            //         newDirection = new Vector2(Mathf.Sqrt(2) / 2, Mathf.Sqrt(2) / 2);
+            //     }
+            //     _rb.velocity = newDirection * _rb.velocity.magnitude;
+            // }
+            // else
+            // {
+            //     _rb.velocity = Vector3.Reflect(_velocityPrev, normal);
+            //
+            // }
             
         }else if (otherObject.CompareTag("Floor"))
         {
