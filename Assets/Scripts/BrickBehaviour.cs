@@ -9,11 +9,16 @@ public class BrickBehaviour : MonoBehaviour
     [SerializeField] private Sprite breakedBrick;
     [SerializeField] public int points;
     
+    public delegate void BrickHited();
+    
+    public BrickHited OnBrickHited;
+    
     private SpriteRenderer _spriteRenderer;
     // Start is called before the first frame update
     void Start()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        OnBrickHited += BrickHit;
     }
 
     // Update is called once per frame
@@ -22,12 +27,8 @@ public class BrickBehaviour : MonoBehaviour
         
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    public void BrickHit()
     {
-        GameObject other = collision.gameObject;
-
-        if (other.CompareTag("Ball"))
-        {
             lives--;
             switch (lives)
             {
@@ -41,6 +42,5 @@ public class BrickBehaviour : MonoBehaviour
                 case <=-1:
                     break;
             }
-        }
     }
 }

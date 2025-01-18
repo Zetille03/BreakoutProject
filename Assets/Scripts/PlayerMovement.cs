@@ -8,10 +8,14 @@ using UnityEngine.Serialization;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float speed = 5f;
-    [SerializeField] private float xMin = -6.4f;
-    [SerializeField] private float xMax = 4.5f;
-    [SerializeField] private float xMinPowerUp = -5f;
-    [SerializeField] private float xMaxPowerUp = 3f;
+    [SerializeField] private Transform leftWall; 
+    [SerializeField] private Transform rightWall;
+    
+    private float _xMin;
+    private float _xMax;
+    
+    [SerializeField] private float xMinPowerUpOffset = 1f; 
+    [SerializeField] private float xMaxPowerUpOffset = 1f;
     
     
     private Vector3 moveDirection = Vector3.zero;
@@ -28,6 +32,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
+        _xMin = leftWall.position.x + leftWall.localScale.y;
+        _xMax = rightWall.position.x - rightWall.localScale.y;
+        
+        
+        transform.localScale = new Vector3(initialSize, transform.localScale.y, transform.localScale.z);
         previousPosition = transform.position;
     }
 
@@ -38,15 +47,16 @@ public class PlayerMovement : MonoBehaviour
 
         moveDirection = new Vector3(horizontalInput, 0f, 0f);
 
+        float adjustedXMin = isPoweredUp ? _xMin + xMinPowerUpOffset : _xMin;
+        float adjustedXMax = isPoweredUp ? _xMax - xMaxPowerUpOffset : _xMax;
+        
         transform.position += moveDirection * (speed * Time.deltaTime);
         
-        float clampedX = Mathf.Clamp(transform.position.x, (isPoweredUp)?xMinPowerUp:xMin,(isPoweredUp)?xMaxPowerUp:xMax);
+        float clampedX = Mathf.Clamp(transform.position.x, adjustedXMin,adjustedXMax);
         transform.position = new Vector3(clampedX, transform.position.y, transform.position.z);
 
-        // Calcular la velocidad basada en el cambio de posición
         Velocity = (transform.position - previousPosition) / Time.deltaTime;
 
-        // Actualizar la posición previa
         previousPosition = transform.position;
 
         if (_timer != 0 && isPoweredUp)

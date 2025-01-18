@@ -65,7 +65,7 @@ public class GameManager : MonoBehaviour
     public void ResetPoint()
     {
         player.transform.position = _playerInitialPosition;
-        proyectil.LanzamientoInicial();
+        proyectil.ReseteoPunto();
     }
 
     public void StartPowerUpCounter()
