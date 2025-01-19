@@ -78,9 +78,11 @@ public class PlayerMovement : MonoBehaviour
     {
         if (other.gameObject.CompareTag("PowerUp"))
         {
+            GameManager.Instance.StartPowerUpCounter(powerUpDuration);
             _timer = powerUpDuration;
             isPoweredUp = true;
             transform.localScale = new Vector3(powerUpSize,transform.localScale.y,transform.localScale.z);
+            Destroy(other.gameObject);
         }
     }
 }

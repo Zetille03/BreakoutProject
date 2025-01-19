@@ -32,13 +32,14 @@ public class BrickPowerUpBehaviour : MonoBehaviour
 
     public void BrickHit()
     {
-        
+        GameManager.Instance.AddScore(points);
         _rb.constraints = RigidbodyConstraints2D.None;
         _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         _rb.constraints = RigidbodyConstraints2D.FreezePositionX;
         _col.isTrigger = true;
         _rb.gravityScale = 1;
         _spriteRenderer.sprite = powerUpSprite;
+        
         
     }
 }

@@ -6,15 +6,20 @@ using Random = UnityEngine.Random;
 
 public class ProjectileMovement : MonoBehaviour
 {
-    [SerializeField] private float baseSpeed = 5f;
+    [Header("Audio References")]
+    private AudioSource _audioSource;
+    [SerializeField] private AudioSource impactAudioSource;
+    
+    [Header("Object References")]
+    private Rigidbody2D _rb;
     [SerializeField] private GameObject playerGameObject;
+    
+    [Header("Movement Settings")]
+    [SerializeField] private float baseSpeed = 5f;
     [SerializeField] private float angleMultiplier = 2f;
     [SerializeField] private float speedIncrement = 0.5f;
     [SerializeField] private float collisionCoolDown = 0.1f;
     
-    
-    private Rigidbody2D _rb;
-
     private bool _canCollide = true;
     [SerializeField] private Vector2 _velocityPrev;
     private float _currentSpeed; 
@@ -25,6 +30,7 @@ public class ProjectileMovement : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
+        _audioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -69,6 +75,7 @@ public class ProjectileMovement : MonoBehaviour
             
         }else if (otherObject.CompareTag("Floor"))
         {
+            otherObject.GetComponent<AudioSource>().Play();
             ManejarColisionSuelo();
             
         }else if (otherObject.CompareTag("Brick"))
@@ -78,6 +85,8 @@ public class ProjectileMovement : MonoBehaviour
         {
             ManejarColisionPowerUps(otherObject, normal);
         }
+        
+        _audioSource.Play();
         
         StartCoroutine(CollisionCooldown());
     }
@@ -101,6 +110,7 @@ public class ProjectileMovement : MonoBehaviour
 
         
         _rb.velocity = reflectedVelocity.normalized * _currentSpeed;
+        _audioSource.Play();
     }
     
     private void ManejarColisionSuelo()
@@ -118,6 +128,7 @@ public class ProjectileMovement : MonoBehaviour
         Vector2 reflectedVelocity = Vector2.Reflect(_velocityPrev, normal);
         // reflectedVelocity = EnsureMinimumYVelocity(reflectedVelocity);
         _rb.velocity = reflectedVelocity.normalized * _currentSpeed;
+        _audioSource.Play();
     }
     
     private void ManejarColisionPowerUps(GameObject brick, Vector2 normal)
@@ -129,6 +140,7 @@ public class ProjectileMovement : MonoBehaviour
         Vector2 reflectedVelocity = Vector2.Reflect(_velocityPrev, normal);
         // reflectedVelocity = EnsureMinimumYVelocity(reflectedVelocity);
         _rb.velocity = reflectedVelocity.normalized * _currentSpeed;
+        _audioSource.Play();
         
     }
     

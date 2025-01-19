@@ -10,15 +10,21 @@ public class GameManager : MonoBehaviour
     private int totalScore = 0;
     private int totalLives = 4;
     private UiManager uiManager;
-    [SerializeField] private GameObject player;
-    [SerializeField] private ProjectileMovement proyectil;
+    private GameObject _player;
+    private ProjectileMovement _proyectil;
     private Vector2 _playerInitialPosition;
 
     private void Awake()
     {
         if (Instance != null)
         {
-            Destroy(gameObject);
+            Debug.Log("entra");
+            Instance._player = GameObject.FindWithTag("Player");
+            Instance._proyectil = GameObject.FindWithTag("Ball").GetComponent<ProjectileMovement>();
+            Instance._playerInitialPosition = Instance._player.transform.position;
+            Instance.uiManager = GameObject.Find("UiManager").GetComponent<UiManager>();
+            
+            Destroy(this.gameObject);
             return;
         }
         
@@ -26,12 +32,6 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(this);
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        _playerInitialPosition = player.transform.position;
-        uiManager = GameObject.Find("UiManager").GetComponent<UiManager>();
-    }
 
     // Update is called once per frame
     void Update()
@@ -44,15 +44,15 @@ public class GameManager : MonoBehaviour
 
     public void AddScore(int score)
     {
-        totalScore += score;
-        uiManager.setScore(totalScore);
+        Instance.totalScore += score;
+        Instance.uiManager.setScore(Instance.totalScore);
     }
 
     public void RestLife()
     {
-        totalLives--;
-        uiManager.setLifes(totalLives);
-        if (totalLives <= 0)
+        Instance.totalLives--;
+        Instance.uiManager.setLifes(Instance.totalLives);
+        if (Instance.totalLives <= 0)
         {
             
             return;
@@ -64,13 +64,14 @@ public class GameManager : MonoBehaviour
 
     public void ResetPoint()
     {
-        player.transform.position = _playerInitialPosition;
-        proyectil.ReseteoPunto();
+        Instance._player.transform.position = Instance._playerInitialPosition;
+        Instance._proyectil.ReseteoPunto();
     }
 
-    public void StartPowerUpCounter()
+    public void StartPowerUpCounter(float powerUpTime)
     {
-        uiManager.OnPowerUp?.Invoke();
+        Instance.uiManager.powerUpDuration = powerUpTime;
+        Instance.uiManager.OnPowerUp?.Invoke();
     }
     
 }

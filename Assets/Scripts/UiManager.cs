@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class UiManager : MonoBehaviour
 {
     [SerializeField] private TMP_Text scoreTxt;
+    [SerializeField] private TMP_Text powerUpTxt;
     
     [SerializeField] private Image imageLife1;
     
@@ -15,6 +16,9 @@ public class UiManager : MonoBehaviour
     [SerializeField] private Image imageLife3;
     
     [SerializeField] private Image imageLife4;
+    
+    public float powerUpDuration;
+    private float _powerUpTimer=0f;
     
     public delegate void PowerUpDelegate();
     
@@ -29,7 +33,20 @@ public class UiManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (_powerUpTimer > 0)
+        {
+            _powerUpTimer -= Time.deltaTime;
+            if (_powerUpTimer <= 0)
+            {
+                _powerUpTimer = 0;
+                powerUpTxt.text = "00.00";
+            }
+            else
+            {
+                powerUpTxt.text = _powerUpTimer.ToString("00.00");
+            }
+            
+        }
     }
     
     public void setLifes(int vidas)
@@ -72,12 +89,12 @@ public class UiManager : MonoBehaviour
 
     private void setPowerUpCounter()
     {
-        
+        _powerUpTimer = powerUpDuration;
     }
 
     public void setScore(int score)
     {
-        scoreTxt.text = "Points: "+score.ToString();
+        scoreTxt.text = score.ToString();
     }
     
     
