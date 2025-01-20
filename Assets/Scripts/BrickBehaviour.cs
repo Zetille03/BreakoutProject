@@ -9,6 +9,8 @@ public class BrickBehaviour : MonoBehaviour
     [SerializeField] private Sprite breakedBrick;
     [SerializeField] public int points;
     
+    private AudioSource _audioSource;
+    
     public delegate void BrickHited();
     
     public BrickHited OnBrickHited;
@@ -17,6 +19,7 @@ public class BrickBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _audioSource = GetComponent<AudioSource>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         OnBrickHited += BrickHit;
     }
@@ -33,9 +36,11 @@ public class BrickBehaviour : MonoBehaviour
             switch (lives)
             {
                 case 1:
+                    _audioSource.Play();
                     _spriteRenderer.sprite = breakedBrick;
                     break;
                 case 0:
+                    _audioSource.Play();
                     GameManager.Instance.AddScore(points);
                     Destroy(this.gameObject);
                     break;

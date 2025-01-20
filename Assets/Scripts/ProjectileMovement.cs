@@ -84,9 +84,12 @@ public class ProjectileMovement : MonoBehaviour
         }else if (otherObject.CompareTag("PowerUp"))
         {
             ManejarColisionPowerUps(otherObject, normal);
+        }else if (otherObject.CompareTag("Wall") || otherObject.CompareTag("Roof"))
+        {
+            _audioSource.Play();
         }
         
-        _audioSource.Play();
+        
         
         StartCoroutine(CollisionCooldown());
     }
@@ -128,7 +131,6 @@ public class ProjectileMovement : MonoBehaviour
         Vector2 reflectedVelocity = Vector2.Reflect(_velocityPrev, normal);
         // reflectedVelocity = EnsureMinimumYVelocity(reflectedVelocity);
         _rb.velocity = reflectedVelocity.normalized * _currentSpeed;
-        _audioSource.Play();
     }
     
     private void ManejarColisionPowerUps(GameObject brick, Vector2 normal)
@@ -140,8 +142,6 @@ public class ProjectileMovement : MonoBehaviour
         Vector2 reflectedVelocity = Vector2.Reflect(_velocityPrev, normal);
         // reflectedVelocity = EnsureMinimumYVelocity(reflectedVelocity);
         _rb.velocity = reflectedVelocity.normalized * _currentSpeed;
-        _audioSource.Play();
-        
     }
     
     private Vector2 EnsureMinimumAngle(Vector2 velocity)

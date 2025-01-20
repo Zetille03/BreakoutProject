@@ -14,9 +14,11 @@ public class BrickPowerUpBehaviour : MonoBehaviour
     public BrickHited OnBrickHited;
     
     private SpriteRenderer _spriteRenderer;
+    private AudioSource _audioSource;
     // Start is called before the first frame update
     void Start()
     {
+        _audioSource = GetComponent<AudioSource>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _rb = GetComponent<Rigidbody2D>();
         _col = GetComponent<BoxCollider2D>();
@@ -32,6 +34,7 @@ public class BrickPowerUpBehaviour : MonoBehaviour
 
     public void BrickHit()
     {
+        _audioSource.Play();
         GameManager.Instance.AddScore(points);
         _rb.constraints = RigidbodyConstraints2D.None;
         _rb.constraints = RigidbodyConstraints2D.FreezeRotation;

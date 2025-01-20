@@ -35,8 +35,8 @@ public class PlayerMovement : MonoBehaviour
     {
         numberOfBricks = GameObject.FindGameObjectsWithTag("Brick").Length;
         numberOfBricks += GameObject.FindGameObjectsWithTag("PowerUp").Length;
-        _xMin = leftWall.position.x + leftWall.localScale.y;
-        _xMax = rightWall.position.x - rightWall.localScale.y;
+        _xMin = leftWall.position.x + leftWall.GetComponent<Collider2D>().bounds.extents.x+GetComponent<Collider2D>().bounds.extents.x/2;
+        _xMax = rightWall.position.x - rightWall.GetComponent<Collider2D>().bounds.extents.x-GetComponent<Collider2D>().bounds.extents.x/2;
         
         
         transform.localScale = new Vector3(initialSize, transform.localScale.y, transform.localScale.z);

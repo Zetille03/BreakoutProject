@@ -8,6 +8,8 @@ TagManager:
   - Ball
   - Floor
   - PowerUp
+  - Wall
+  - Roof
   layers:
   - Default
   - TransparentFX
