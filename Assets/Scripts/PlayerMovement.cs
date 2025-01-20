@@ -27,11 +27,14 @@ public class PlayerMovement : MonoBehaviour
     public bool isPoweredUp = false;
     [SerializeField] private float initialSize = 2f;
     [SerializeField] private float powerUpSize = 5f;
-    
+
+    public int numberOfBricks;
     
 
     private void Start()
     {
+        numberOfBricks = GameObject.FindGameObjectsWithTag("Brick").Length;
+        numberOfBricks += GameObject.FindGameObjectsWithTag("PowerUp").Length;
         _xMin = leftWall.position.x + leftWall.localScale.y;
         _xMax = rightWall.position.x - rightWall.localScale.y;
         

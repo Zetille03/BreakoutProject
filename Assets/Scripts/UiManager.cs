@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UiManager : MonoBehaviour
@@ -17,6 +18,10 @@ public class UiManager : MonoBehaviour
     
     [SerializeField] private Image imageLife4;
     
+    [SerializeField] private GameObject lostPanel;
+    [SerializeField] private GameObject winPanel;
+    [SerializeField] private GameObject pauseMenu;
+    
     public float powerUpDuration;
     private float _powerUpTimer=0f;
     
@@ -27,6 +32,9 @@ public class UiManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        lostPanel.SetActive(false);
+        winPanel.SetActive(false);
+        pauseMenu.SetActive(false);
         OnPowerUp += setPowerUpCounter;
     }
 
@@ -46,6 +54,11 @@ public class UiManager : MonoBehaviour
                 powerUpTxt.text = _powerUpTimer.ToString("00.00");
             }
             
+        }
+        if (Input.GetKeyDown(KeyCode.Escape) && !pauseMenu.activeInHierarchy)
+        {
+            Time.timeScale = 0;
+            pauseMenu.SetActive(true);
         }
     }
     
@@ -83,10 +96,29 @@ public class UiManager : MonoBehaviour
                 imageLife2.enabled = false;
                 imageLife3.enabled = false;
                 imageLife4.enabled = false;
+                showLostPanel();
                 break;
         }
     }
 
+    public void keepPlaying()
+    {
+        Time.timeScale = 1;
+        pauseMenu.SetActive(false);
+    }
+    
+    private void showLostPanel()
+    {
+        lostPanel.SetActive(true);
+        Time.timeScale = 0f;
+    }
+
+    public void showWinPanel()
+    {
+        winPanel.SetActive(true);
+        Time.timeScale = 0f;
+    }
+    
     private void setPowerUpCounter()
     {
         _powerUpTimer = powerUpDuration;
@@ -97,6 +129,37 @@ public class UiManager : MonoBehaviour
         scoreTxt.text = score.ToString();
     }
     
+    public void ExitGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+    }
+    
+    public void BackToMainMenu()
+    {
+        SceneManager.LoadScene("MenuScene");
+    }
+    
+
+    public void LoadLevel2()
+    {
+        SceneManager.LoadScene("Level2");
+    }
+
+    public void LoadLevel3()
+    {
+        SceneManager.LoadScene("Level2");
+    }
+
+    public void RetryCurrentLevel()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
     
     
 }
