@@ -12,19 +12,19 @@ public class AudioMixerManager : MonoBehaviour
     [SerializeField] private AudioMixerGroup musicGroup;
     [SerializeField] private AudioMixerGroup soundGroup;
 
-    private bool isMusicMuted = false; 
-    private bool isSFXMuted = false;
+    private bool _isMusicMuted = false; 
+    private bool _isSFXMuted = false;
     
     public void ToggleMusicMute()
     {
-        isMusicMuted = !isMusicMuted;
-        audioMixer.SetFloat("MusicMixer", isMusicMuted ? -80f : 0f);
+        _isMusicMuted = !_isMusicMuted;
+        audioMixer.SetFloat("MusicMixer", _isMusicMuted ? -80f : 0f);
     }
 
     public void ToggleSFXMute()
     {
-        isSFXMuted = !isSFXMuted;
-        audioMixer.SetFloat("SFXMixer", isSFXMuted ? -80f : 0f);
+        _isSFXMuted = !_isSFXMuted;
+        audioMixer.SetFloat("SFXMixer", _isSFXMuted ? -80f : 0f);
     }
 
     

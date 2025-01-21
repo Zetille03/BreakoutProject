@@ -26,12 +26,6 @@ public class BrickPowerUpBehaviour : MonoBehaviour
         
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void BrickHit()
     {
         _audioSource.Play();

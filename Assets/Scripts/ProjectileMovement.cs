@@ -13,6 +13,7 @@ public class ProjectileMovement : MonoBehaviour
     [Header("Object References")]
     private Rigidbody2D _rb;
     [SerializeField] private GameObject playerGameObject;
+    private PlayerMovement _playerMovement;
     
     [Header("Movement Settings")]
     [SerializeField] private float baseSpeed = 5f;
@@ -33,6 +34,7 @@ public class ProjectileMovement : MonoBehaviour
 
     private void Start()
     {
+        _playerMovement = playerGameObject.GetComponent<PlayerMovement>();
         _currentSpeed = baseSpeed;
         LanzamientoInicial();
     }
@@ -91,8 +93,7 @@ public class ProjectileMovement : MonoBehaviour
     
     private void ManejarColisionPlayer(ContactPoint2D contact, Vector2 normal)
     {
-        PlayerMovement playerMovement = playerGameObject.GetComponent<PlayerMovement>();
-        Vector2 playerVelocity = playerMovement != null ? playerMovement.Velocity : Vector2.zero;
+        Vector2 playerVelocity = _playerMovement != null ? _playerMovement.Velocity : Vector2.zero;
 
         float paddleWidth = playerGameObject.GetComponent<Collider2D>().bounds.size.x;
         float impactOffset = (contact.point.x - playerGameObject.transform.position.x) / (paddleWidth / 2);

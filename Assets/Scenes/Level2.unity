@@ -3518,7 +3518,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 128476755}
         m_TargetAssemblyTypeName: AudioMixerManager, Assembly-CSharp
         m_MethodName: ToggleMusicMute
         m_Mode: 1
@@ -8337,7 +8337,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 128476755}
         m_TargetAssemblyTypeName: AudioMixerManager, Assembly-CSharp
         m_MethodName: ToggleSFXMute
         m_Mode: 1
