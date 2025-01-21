@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -20,9 +21,12 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        if (SceneManager.GetActiveScene().name != "MenuScene" && Instance == null)
+        {
+            SceneManager.LoadScene("MenuScene");
+        }
         if (Instance != null && SceneManager.GetActiveScene().name!="MenuScene")
         {
-            Debug.Log("entra");
             Instance.totalScore = 0;
             Instance.totalLives = 4;
             Instance.bricksDestroyed = 0;
@@ -92,5 +96,6 @@ public class GameManager : MonoBehaviour
         Instance.uiManager.powerUpDuration = powerUpTime;
         Instance.uiManager.OnPowerUp?.Invoke();
     }
+    
     
 }

@@ -149,10 +149,6 @@ public class UiManager : MonoBehaviour
         SceneManager.LoadScene("Level2");
     }
 
-    public void LoadLevel3()
-    {
-        SceneManager.LoadScene("Level2");
-    }
 
     public void RetryCurrentLevel()
     {

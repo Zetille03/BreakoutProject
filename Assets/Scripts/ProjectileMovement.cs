@@ -8,7 +8,7 @@ public class ProjectileMovement : MonoBehaviour
 {
     [Header("Audio References")]
     private AudioSource _audioSource;
-    [SerializeField] private AudioSource impactAudioSource;
+    [SerializeField] private AudioClip impactBrickAudioSource;
     
     [Header("Object References")]
     private Rigidbody2D _rb;
@@ -18,9 +18,7 @@ public class ProjectileMovement : MonoBehaviour
     [SerializeField] private float baseSpeed = 5f;
     [SerializeField] private float angleMultiplier = 2f;
     [SerializeField] private float speedIncrement = 0.5f;
-    [SerializeField] private float collisionCoolDown = 0.1f;
     
-    private bool _canCollide = true;
     [SerializeField] private Vector2 _velocityPrev;
     private float _currentSpeed; 
     private Vector2 _velocity;
@@ -62,7 +60,6 @@ public class ProjectileMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if(!_canCollide) return;
         
         GameObject otherObject = other.gameObject;
         ContactPoint2D contact = other.contacts[0];
@@ -89,9 +86,6 @@ public class ProjectileMovement : MonoBehaviour
             _audioSource.Play();
         }
         
-        
-        
-        StartCoroutine(CollisionCooldown());
     }
 
     
@@ -131,6 +125,7 @@ public class ProjectileMovement : MonoBehaviour
         Vector2 reflectedVelocity = Vector2.Reflect(_velocityPrev, normal);
         // reflectedVelocity = EnsureMinimumYVelocity(reflectedVelocity);
         _rb.velocity = reflectedVelocity.normalized * _currentSpeed;
+        _audioSource.PlayOneShot(impactBrickAudioSource);
     }
     
     private void ManejarColisionPowerUps(GameObject brick, Vector2 normal)
@@ -142,6 +137,7 @@ public class ProjectileMovement : MonoBehaviour
         Vector2 reflectedVelocity = Vector2.Reflect(_velocityPrev, normal);
         // reflectedVelocity = EnsureMinimumYVelocity(reflectedVelocity);
         _rb.velocity = reflectedVelocity.normalized * _currentSpeed;
+        _audioSource.PlayOneShot(impactBrickAudioSource);
     }
     
     private Vector2 EnsureMinimumAngle(Vector2 velocity)
@@ -157,12 +153,6 @@ public class ProjectileMovement : MonoBehaviour
         return velocity.normalized * _currentSpeed;
     }
     
-    private IEnumerator CollisionCooldown()
-    {
-        _canCollide = false;
-        yield return new WaitForSeconds(collisionCoolDown);
-        _canCollide = true;
-    }
     
     
 }
